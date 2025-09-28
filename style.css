@@ -132,6 +132,7 @@ body {
 }
 
 #reset-button {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);      /* розмір тексту */
   width: calc(100vw - 40px);
   justify-content: center;  
   background-color: var(--color-reset);
@@ -139,8 +140,7 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   border: none;
   border-radius: 8px;
-  padding: 12px 20px;
-  font-size: 1em;
+  padding: 12px 20px; 
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
