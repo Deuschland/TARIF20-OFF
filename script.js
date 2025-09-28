@@ -282,7 +282,7 @@ resetView();
 
 // Реєстрація Service Worker і повідомлення про оновлення
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js');
+  navigator.serviceWorker.register('./service-worker.js');
   navigator.serviceWorker.addEventListener('message', event => {
     if (event.data && event.data.type === 'NEW_VERSION_AVAILABLE') {
       if (confirm('Доступна нова версія — оновити?')) {
