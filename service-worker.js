@@ -5,8 +5,7 @@ const FILES_TO_CACHE = [
   './script.js',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png',
-  './offline.html' // резервна сторінка
+  './icon-512.png'
 ];
 
 // Встановлення Service Worker і кешування файлів
