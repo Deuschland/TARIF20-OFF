@@ -5,9 +5,11 @@ const FILES_TO_CACHE = [
   './script.js',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './offline.html' // резервна сторінка
 ];
 
+// Встановлення Service Worker і кешування файлів
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
@@ -17,6 +19,7 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
+// Активація: очищення старих кешів
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys => {
@@ -32,16 +35,23 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
+// Обробка запитів
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
+
+  // Пропускаємо запити до розширень Chrome
   if (url.protocol === 'chrome-extension:') return;
 
   event.respondWith(
     caches.match(event.request).then(cachedResponse => {
-      return cachedResponse || fetch(event.request).then(networkResponse => {
-        // Перевірка: кешуємо лише локальні ресурси з типом 'basic'
+      // Якщо є кеш — повертаємо його
+      if (cachedResponse) return cachedResponse;
+
+      // Інакше пробуємо отримати з мережі
+      return fetch(event.request).then(networkResponse => {
+        // Перевірка: кешуємо лише локальні ресурси
         if (
           !networkResponse ||
           networkResponse.status !== 200 ||
@@ -52,11 +62,15 @@ self.addEventListener('fetch', event => {
         }
 
         const responseToCache = networkResponse.clone();
-        return caches.open(CACHE_NAME).then(cache => {
+        caches.open(CACHE_NAME).then(cache => {
           cache.put(event.request, responseToCache);
-          return networkResponse;
         });
-      }).catch(() => caches.match('./index.html'));
+
+        return networkResponse;
+      }).catch(() => {
+        // Якщо мережа недоступна — показуємо offline.html
+        return caches.match('./offline.html');
+      });
     })
   );
 });
