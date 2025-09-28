@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarif Auswahl</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0077cc">
+
+ 
+</head>
+<body>
+
+  <header></header>
+
+  <main>
+    <div id="reset-container">
+     <button id="reset-button" aria-label="Auswahl zurücksetzen">
+  Zurück
+</button>
+    </div>
+
+    <section id="menu-buttons" aria-label="Hauptmenü"></section>
+    <section id="sub-options" aria-label="Untermenü"></section>
+    <section id="output" aria-label="Details"></section>
+  </main>
+
+  <script src="script.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('✅ Service Worker registered', reg))
+      .catch(err => console.error('❌ Service Worker registration failed', err));
+  }
+</script>
+</body>
+</html>
